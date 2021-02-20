@@ -4,6 +4,7 @@ target/
 *.war
 *.zip
 *.tar
+.flattened-pom.xml
 
 # eclipse ignore
 .settings/
@@ -28,3 +29,5 @@ logs/
 # system ignore
 .DS_Store
 Thumbs.db
+
+public/

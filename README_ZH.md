@@ -1,182 +1,94 @@
-# Elastic-Job - 分布式作业调度解决方案
+# [ElasticJob - 分布式作业调度解决方案](http://shardingsphere.apache.org/elasticjob/)
 
-[![Build Status](https://secure.travis-ci.org/elasticjob/elastic-job.png?branch=master)](https://travis-ci.org/elasticjob/elastic-job)
-[![Maven Status](https://maven-badges.herokuapp.com/maven-central/com.dangdang/elastic-job/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.dangdang/elastic-job)
-[![Coverage Status](https://coveralls.io/repos/elasticjob/elastic-job/badge.svg?branch=master&service=github)](https://coveralls.io/github/elasticjob/elastic-job?branch=master)
-[![GitHub release](https://img.shields.io/github/release/elasticjob/elastic-job.svg)](https://github.com/elasticjob/elastic-job/releases)
+**官方网站: https://shardingsphere.apache.org/elasticjob/**
+
+[![Stargazers over time](https://starchart.cc/apache/shardingsphere-elasticjob.svg)](https://starchart.cc/apache/shardingsphere-elasticjob)
+
+ElasticJob 是面向互联网生态和海量任务的分布式调度解决方案，由两个相互独立的子项目 ElasticJob-Lite 和 ElasticJob-Cloud 组成。
+它通过弹性调度、资源管控、以及作业治理的功能，打造一个适用于互联网场景的分布式调度解决方案，并通过开放的架构设计，提供多元化的作业生态。
+它的各个产品使用统一的作业 API，开发者仅需一次开发，即可随意部署。
+
+ElasticJob 已于 2020 年 5 月 28 日成为 [Apache ShardingSphere](https://shardingsphere.apache.org/) 的子项目。
+欢迎通过[邮件列表](mailto:dev@shardingsphere.apache.org)参与讨论。
+
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-# 概述
+[![GitHub release](https://img.shields.io/github/release/apache/shardingsphere-elasticjob.svg)](https://github.com/apache/shardingsphere-elasticjob/releases)
 
-Elastic-Job是一个分布式调度解决方案，由两个相互独立的子项目Elastic-Job-Lite和Elastic-Job-Cloud组成。
+[![Maven Status](https://maven-badges.herokuapp.com/maven-central/com.dangdang/elastic-job/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.dangdang/elastic-job)
+[![Build Status](https://secure.travis-ci.org/apache/shardingsphere-elasticjob.png?branch=master)](https://travis-ci.org/apache/shardingsphere-elasticjob)
+[![GitHub Workflow](https://img.shields.io/github/workflow/status/apache/shardingsphere-elasticjob/Java%20CI%20with%20Maven%20on%20macOS/master)](https://github.com/apache/shardingsphere-elasticjob/actions?query=workflow%3A%22Java+CI+with+Maven+on+macOS%22)
+[![codecov](https://codecov.io/gh/apache/shardingsphere-elasticjob/branch/master/graph/badge.svg)](https://codecov.io/gh/apache/shardingsphere-elasticjob)
 
-Elastic-Job-Lite定位为轻量级无中心化解决方案，使用jar包的形式提供分布式任务的协调服务。
+## 简介
 
-Elastic-Job-Cloud使用Mesos + Docker的解决方案，额外提供资源治理、应用分发以及进程隔离等服务。
+使用 ElasticJob 能够让开发工程师不再担心任务的线性吞吐量提升等非功能需求，使他们能够更加专注于面向业务编码设计；
+同时，它也能够解放运维工程师，使他们不必再担心任务的可用性和相关管理需求，只通过轻松的增加服务节点即可达到自动化运维的目的。
 
-# 功能列表
+### ElasticJob-Lite
 
-## 1. Elastic-Job-Lite
+定位为轻量级无中心化解决方案，使用 jar 的形式提供分布式任务的协调服务。
 
-* 分布式调度协调
-* 弹性扩容缩容
-* 失效转移
-* 错过执行作业重触发
-* 作业分片一致性，保证同一分片在分布式环境中仅一个执行实例
-* 自诊断并修复分布式不稳定造成的问题
-* 支持并行调度
-* 支持作业生命周期操作
-* 丰富的作业类型
-* Spring整合以及命名空间提供
-* 运维平台
+![ElasticJob-Lite Architecture](https://shardingsphere.apache.org/elasticjob/current/img/architecture/elasticjob_lite.png)
 
-## 2. Elastic-Job-Cloud
-* 应用自动分发
-* 基于Fenzo的弹性资源分配
-* 分布式调度协调
-* 弹性扩容缩容
-* 失效转移
-* 错过执行作业重触发
-* 作业分片一致性，保证同一分片在分布式环境中仅一个执行实例
-* 支持并行调度
-* 支持作业生命周期操作
-* 丰富的作业类型
-* Spring整合
-* 运维平台
-* 基于Docker的进程隔离(TBD)
+### ElasticJob-Cloud
 
-# 架构图
+采用自研 Mesos Framework 的解决方案，额外提供资源治理、应用分发以及进程隔离等功能。
 
-## Elastic-Job-Lite
+![ElasticJob-Cloud Architecture](https://shardingsphere.apache.org/elasticjob/current/img/architecture/elasticjob_cloud.png)
 
-![Elastic-Job-Lite Architecture](http://ovfotjrsi.bkt.clouddn.com/docs/img/architecture/elastic_job_lite.png)
-***
+|           | *ElasticJob-Lite* | *ElasticJob-Cloud* |
+| --------- | ----------------- | ------------------ |
+| 无中心化   | 是                | 否                  |
+| 资源分配   | 不支持             | 支持                |
+| 作业模式   | 常驻               | 常驻 + 瞬时         |
+| 部署依赖   | ZooKeeper         | ZooKeeper + Mesos   |
 
-## Elastic-Job-Cloud
+## 功能列表
 
-![Elastic-Job-Cloud Architecture](http://ovfotjrsi.bkt.clouddn.com/docs/img/architecture/elastic_job_cloud.png)
+- 弹性调度
+  - 支持任务在分布式场景下的分片和高可用
+  - 能够水平扩展任务的吞吐量和执行效率
+  - 任务处理能力随资源配备弹性伸缩
 
+- 资源分配
+  - 在适合的时间将适合的资源分配给任务并使其生效
+  - 相同任务聚合至相同的执行器统一处理
+  - 动态调配追加资源至新分配的任务
 
-# [Release Notes](https://github.com/elasticjob/elastic-job/releases)
+- 作业治理
+  - 失效转移
+  - 错过作业重新执行
+  - 自诊断修复
 
-# [Roadmap](ROADMAP.md)
+- 作业依赖(TODO)
+  - 基于有向无环图（DAG）的作业间依赖
+  - 基于有向无环图（DAG）的作业分片间依赖
 
-# 快速入门
+- 作业开放生态
+  - 可扩展的作业类型统一接口
+  - 丰富的作业类型库，如数据流、脚本、HTTP、文件、大数据等
+  - 易于对接业务作业，能够与 Spring 依赖注入无缝整合
 
-## Elastic-Job-Lite
+- [可视化管控端](https://github.com/apache/shardingsphere-elasticjob-ui)
+  - 作业管控端
+  - 作业执行历史数据追踪
+  - 注册中心管理
 
-### 引入maven依赖
+## 环境要求
 
-```xml
-<!-- 引入elastic-job-lite核心模块 -->
-<dependency>
-    <groupId>com.dangdang</groupId>
-    <artifactId>elastic-job-lite-core</artifactId>
-    <version>${latest.release.version}</version>
-</dependency>
+### Java
 
-<!-- 使用springframework自定义命名空间时引入 -->
-<dependency>
-    <groupId>com.dangdang</groupId>
-    <artifactId>elastic-job-lite-spring</artifactId>
-    <version>${latest.release.version}</version>
-</dependency>
-```
-### 作业开发
+请使用 Java 8 及其以上版本。
 
-```java
-public class MyElasticJob implements SimpleJob {
-    
-    @Override
-    public void execute(ShardingContext context) {
-        switch (context.getShardingItem()) {
-            case 0: 
-                // do something by sharding item 0
-                break;
-            case 1: 
-                // do something by sharding item 1
-                break;
-            case 2: 
-                // do something by sharding item 2
-                break;
-            // case n: ...
-        }
-    }
-}
-```
+### Maven
 
-### 作业配置
+请使用 Maven 3.5.0 及其以上版本。
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
-    xmlns:job="http://www.dangdang.com/schema/ddframe/job"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-                        http://www.springframework.org/schema/beans/spring-beans.xsd
-                        http://www.dangdang.com/schema/ddframe/reg
-                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
-                        http://www.dangdang.com/schema/ddframe/job
-                        http://www.dangdang.com/schema/ddframe/job/job.xsd
-                        ">
-    <!--配置作业注册中心 -->
-    <reg:zookeeper id="regCenter" server-lists="yourhost:2181" namespace="dd-job" base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3" />
-    
-    <!-- 配置作业-->
-    <job:simple id="oneOffElasticJob" class="xxx.MyElasticJob" registry-center-ref="regCenter" cron="0/10 * * * * ?" sharding-total-count="3" sharding-item-parameters="0=A,1=B,2=C" />
-</beans>
-```
+### ZooKeeper
 
-***
+请使用 ZooKeeper 3.6.0 及其以上版本。[详情参见](https://zookeeper.apache.org/)
 
-## Elastic-Job-Cloud
+### Mesos（仅 ElasticJob-Cloud 使用）
 
-### 引入maven依赖
-
-```xml
-<!-- 引入elastic-job-cloud执行器模块 -->
-<dependency>
-    <groupId>com.dangdang</groupId>
-    <artifactId>elastic-job-cloud-executor</artifactId>
-    <version>${latest.release.version}</version>
-</dependency>
-```
-
-### 作业开发
-
-```java
-public class MyElasticJob implements SimpleJob {
-    
-    @Override
-    public void execute(ShardingContext context) {
-        switch (context.getShardingItem()) {
-            case 0: 
-                // do something by sharding item 0
-                break;
-            case 1: 
-                // do something by sharding item 1
-                break;
-            case 2: 
-                // do something by sharding item 2
-                break;
-            // case n: ...
-        }
-    }
-}
-```
-
-### 打包作业
-tar -cvf yourJobs.tar.gz yourJobs
-
-### 发布APP
-
-```shell
-curl -l -H "Content-type: application/json" -X POST -d '{"appName":"foo_app","appURL":"http://app_host:8080/yourJobs.gz","cpuCount":0.1,"memoryMB":64.0,"bootstrapScript":"bin/start.sh","appCacheEnable":true,"eventTraceSamplingCount":0}' http://elastic_job_cloud_host:8899/api/app
-```
-
-### 发布作业
-
-```shell
-curl -l -H "Content-type: application/json" -X POST -d '{"jobName":"foo_job","jobClass":"yourJobClass","jobType":"SIMPLE","jobExecutionType":"TRANSIENT","cron":"0/5 * * * * ?","shardingTotalCount":5,"cpuCount":0.1,"memoryMB":64.0,"appName":"foo_app","failover":true,"misfire":true,"bootstrapScript":"bin/start.sh"}' http://elastic_job_cloud_host:8899/api/job/register
-```
+请使用 Mesos 1.1.0 及其兼容版本。[详情参见](https://mesos.apache.org/)
